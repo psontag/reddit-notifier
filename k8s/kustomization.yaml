@@ -1,0 +1,10 @@
+commonLabels:
+  app.kubernetes.io/name: reddit-notifier
+  app.kubernetes.io/instance: reddit-notifier
+  app.kubernetes.io/version: "0.4.0"
+  app.kubernetes.io/component: cronjob
+  app.kubernetes.io/part-of: reddit-notifier
+  app.kubernetes.io/created-by: skaffold
+resources:
+  - cronjob.yaml
+  - serviceaccount.yaml

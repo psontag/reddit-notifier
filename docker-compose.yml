@@ -1,0 +1,5 @@
+services:
+  notifier:
+    build: .
+    volumes:
+      - .:/app

@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "OrderedDict([('package', 'reddit-notifier'), ('_template', '/Users/psontag/code/cookiecutter')]).package"
+version = "0.1.0"
+description = ""
+authors = ["Philipp Sontag <philipp.sontag@web.de>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+httpx = "^0.21.1"
+pydantic = {extras = ["dotenv"], version = "^1.9.0"}
+aiosmtplib = "^1.1.6"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
+skip = [".gitignore", ".dockerignore"]
+
+[tool.pycln]
+all = true

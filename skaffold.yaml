@@ -1,0 +1,17 @@
+apiVersion: skaffold/v2beta26
+kind: Config
+metadata:
+  name: reddit-notifier
+build:
+  artifacts:
+    - image: psontag/reddit-notifier
+      docker:
+        dockerfile: Dockerfile
+  local:
+    useBuildkit: true
+deploy:
+  kustomize:
+    paths:
+      - k8s
+    buildArgs:
+      - "--enable-managedby-label"

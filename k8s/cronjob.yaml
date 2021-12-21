@@ -1,0 +1,45 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: reddit-notifier
+spec:
+  schedule: "0 */1 * * *"
+  concurrencyPolicy: Replace
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            vault.hashicorp.com/agent-inject: "true"
+            vault.hashicorp.com/agent-pre-populate-only: "true"
+            vault.hashicorp.com/agent-inject-secret-reddit-creds: "kv/reddit-notifier/credentials"
+            vault.hashicorp.com/role: "reddit-notifier"
+            vault.hashicorp.com/agent-inject-template-reddit-creds: |
+              {{- with secret "kv/reddit-notifier/credentials" -}}
+              export reddit_username="{{ .Data.data.reddit_username }}"
+              export reddit_password="{{ .Data.data.reddit_password }}"
+              export reddit_client_id="{{ .Data.data.reddit_client_id }}"
+              export reddit_client_secret="{{ .Data.data.reddit_client_secret }}"
+              export email_username="{{ .Data.data.email_username }}"
+              export email_password="{{ .Data.data.email_password }}"
+              {{- end }}
+        spec:
+          restartPolicy: OnFailure
+          serviceAccountName: reddit-notifier
+          containers:
+            - name: notifier
+              image: psontag/reddit-notifier:v0.0.4
+              args: [
+                  "sh",
+                  "-c",
+                  ". /vault/secrets/reddit-creds && python reddit_notifier", # source env vars from the vault file
+                ]
+              imagePullPolicy: IfNotPresent
+              env:
+                - name: REDDIT_NOTIFIER_VERSION
+                  value: $(REDDIT_NOTIFIER_VERSION)
+                - name: INTERVAL_HOURS
+                  value: "1"
+                - name: SEARCH_QUERY
+                  value: 'title:("[EU-") AND title:hammerhead'
