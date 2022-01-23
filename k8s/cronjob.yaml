@@ -29,7 +29,7 @@ spec:
           serviceAccountName: reddit-notifier
           containers:
             - name: notifier
-              image: psontag/reddit-notifier:v0.0.4
+              image: psontag/reddit-notifier:v0.0.5
               args: [
                   "sh",
                   "-c",

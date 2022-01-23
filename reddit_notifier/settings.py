@@ -5,7 +5,7 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
 
-    version: str = "0.0.4"
+    version: str = "0.0.5"
 
     api_root: str = "https://www.reddit.com"
 
